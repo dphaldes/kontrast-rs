@@ -1,4 +1,4 @@
-use cxx_kde_frameworks::kcoreaddons::{KAboutData, License};
+use cxx_kde_frameworks::kcoreaddons::{KAboutData, KAuthor, KCredit, KTranslator, License};
 use cxx_kde_frameworks::ki18n::{i18nc, KLocalizedContext, KLocalizedString};
 use cxx_qt_lib::{QByteArray, QGuiApplication, QQmlApplicationEngine, QString, QUrl};
 
@@ -12,48 +12,35 @@ fn main() {
 
     let mut about_data = KAboutData::from(
         QString::from("konstrast"),
-        i18nc("@title".into(), "Kontrast".into()),
+        i18nc("@title", "Kontrast"),
         QString::from("TEST"),
-        i18nc(
-            "@title".into(),
-            "A constrast checker application. Now oxidized!".into(),
-        ),
+        i18nc("@title", "A constrast checker application. Now oxidized!"),
         License::GPL_V3,
     );
 
     if let Some(about_data) = about_data.as_mut() {
         about_data
-            .add_author(
-                &i18nc("@info:credit".into(), "Carl Schwan".into()),
-                &i18nc("@info:credit".into(), "Maintainer and creator".into()),
-                &QString::from("carl@carlschwan.eu"),
-                &QString::from("https://carlschwan.eu"),
-                &QUrl::from("https://carlschwan.eu/avatar.png"),
-            )
-            .add_credit(
-                &i18nc("@info:credit".into(), "Wikipedia".into()),
-                &i18nc(
-                    "@info:credit".into(),
-                    "Text on the main page CC-BY-SA-4.0".into(),
-                ),
-                &QString::from(""),
-                &QString::from(""),
-                &QUrl::from(""),
-            )
-            .add_author(
-                &i18nc("@info:credit".into(), "Carson Black".into()),
-                &i18nc(
-                    "@info:credit".into(),
-                    "SQLite backend for favorite colors".into(),
-                ),
-                &QString::from(""),
-                &QString::from(""),
-                &QUrl::from(""),
-            )
-            .set_translator(
-                &i18nc("NAME OF TRANSLATORS".into(), "Your names".into()),
-                &i18nc("EMAIL OF TRANSLATORS".into(), "Your emails".into()),
-            );
+            .add_author(KAuthor {
+                name: i18nc("@info:credit", "Carl Schwan"),
+                task: i18nc("@info:credit", "Maintainer and creator"),
+                email_address: QString::from("carl@carlschwan.eu"),
+                web_address: QString::from("https://carlschwan.eu"),
+                avatar_url: QUrl::from("https://carlschwan.eu/avatar.png"),
+            })
+            .add_credit(KCredit {
+                name: i18nc("@info:credit", "Wikipedia"),
+                task: i18nc("@info:credit", "Text on the main page CC-BY-SA-4.0"),
+                ..Default::default()
+            })
+            .add_author(KAuthor {
+                name: i18nc("@info:credit", "Carson Black"),
+                task: i18nc("@info:credit", "SQLite backend for favorite colors"),
+                ..Default::default()
+            })
+            .set_translator(KTranslator {
+                name: i18nc("NAME OF TRANSLATORS", "Your names"),
+                email_address: i18nc("EMAIL OF TRANSLATORS", "Your emails"),
+            });
     }
 
     KAboutData::set_application_data(about_data);
