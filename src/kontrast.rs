@@ -30,7 +30,12 @@ mod ffi {
 
         #[qinvokable]
         fn random(self: Pin<&mut Kontrast>);
+
+        #[qinvokable]
+        fn reverse(self: Pin<&mut Kontrast>);
     }
+
+    impl cxx_qt::Constructor<()> for Kontrast {}
 }
 
 use std::pin::Pin;
@@ -74,11 +79,27 @@ impl ffi::Kontrast {
             if contrast(&text_color, &bg_color) > 3.5 {
                 self.as_mut().set_text_color(text_color);
                 self.as_mut().set_background_color(bg_color);
-                self.as_mut().contrast_changed();
+                self.as_mut().recalc_contrast();
                 self.as_mut().font_size_changed();
                 break;
             }
         }
+    }
+
+    fn reverse(mut self: Pin<&mut Self>) {
+        let text_color = self.text_color.clone();
+        let background_color = self.background_color.clone();
+        self.as_mut().set_text_color(background_color);
+        self.as_mut().set_background_color(text_color);
+        self.as_mut().recalc_contrast();
+        self.as_mut().font_size_changed();
+    }
+
+    fn recalc_contrast(mut self: Pin<&mut Self>) {
+        let text_color = self.text_color.clone();
+        let background_color = self.background_color.clone();
+        self.as_mut()
+            .set_contrast(contrast(&text_color, &background_color));
     }
 }
 
