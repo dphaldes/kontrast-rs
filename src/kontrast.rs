@@ -1,3 +1,19 @@
+#[derive(Default)]
+pub struct KontrastStruct {
+    text_color: QColor,
+    text_hue: i32,
+    text_saturation: i32,
+    text_lightness: i32,
+    font_size: i32,
+    background_color: QColor,
+    background_hue: i32,
+    background_saturation: i32,
+    background_lightness: i32,
+    font_size_label: QString,
+    display_text_color: QColor,
+    grabbed_color: QColor,
+}
+
 #[cxx_qt::bridge]
 mod ffi {
 
@@ -10,29 +26,50 @@ mod ffi {
     }
 
     unsafe extern "RustQt" {
+
         #[qobject]
         #[qml_element]
         #[qml_singleton]
-        #[qproperty(QColor, text_color)]
-        #[qproperty(i32, text_hue)]
-        #[qproperty(i32, text_saturation)]
-        #[qproperty(i32, text_lightness)]
-        #[qproperty(i32, font_size)]
-        #[qproperty(QColor, background_color)]
-        #[qproperty(i32, background_hue)]
-        #[qproperty(i32, background_saturation)]
-        #[qproperty(i32, background_lightness)]
-        #[qproperty(QString, font_size_label)]
-        #[qproperty(f32, contrast)]
-        #[qproperty(QColor, display_text_color)]
+        #[qproperty(QColor, text_color, READ, WRITE, NOTIFY = text_color_changed)]
+        #[qproperty(i32, text_hue, READ, WRITE, NOTIFY = text_color_changed)]
+        #[qproperty(i32, text_saturation, READ, WRITE, NOTIFY = text_color_changed)]
+        #[qproperty(i32, text_lightness, READ, WRITE, NOTIFY = text_color_changed)]
+        #[qproperty(i32, font_size, READ, WRITE, NOTIFY = font_size_changed)]
+        #[qproperty(QColor, background_color, READ, WRITE, NOTIFY = bg_color_changed)]
+        #[qproperty(i32, background_hue, READ, WRITE, NOTIFY = bg_color_changed)]
+        #[qproperty(i32, background_saturation, READ, WRITE, NOTIFY = bg_color_changed)]
+        #[qproperty(i32, background_lightness, READ, WRITE, NOTIFY = bg_color_changed)]
+        #[qproperty(QString, font_size_label, READ, NOTIFY = font_size_changed)]
+        #[qproperty(f32, contrast, READ = contrast, NOTIFY = contrast_changed)]
+        #[qproperty(QColor, display_text_color, READ,  NOTIFY = contrast_changed)]
         #[qproperty(QColor, grabbed_color)]
-        type Kontrast = super::KontrastImpl;
+        type Kontrast = super::KontrastStruct;
 
         #[qinvokable]
         fn random(self: Pin<&mut Kontrast>);
 
         #[qinvokable]
         fn reverse(self: Pin<&mut Kontrast>);
+
+        #[qinvokable]
+        fn contrast(self: &Kontrast) -> f32;
+
+        #[cxx_name = "text_color_changed"]
+        #[qsignal]
+        fn text_color_changed(self: Pin<&mut Kontrast>);
+
+        #[cxx_name = "font_size_changed"]
+        #[qsignal]
+        fn font_size_changed(self: Pin<&mut Kontrast>);
+
+        #[cxx_name = "bg_color_changed"]
+        #[qsignal]
+        fn bg_color_changed(self: Pin<&mut Kontrast>);
+
+        #[cxx_name = "contrast_changed"]
+        #[qsignal]
+        fn contrast_changed(self: Pin<&mut Kontrast>);
+
     }
 
     impl cxx_qt::Constructor<()> for Kontrast {}
@@ -42,23 +79,6 @@ use std::pin::Pin;
 
 use cxx_qt_lib::{QColor, QString};
 use rand::{thread_rng, Rng};
-
-#[derive(Default)]
-pub struct KontrastImpl {
-    text_color: QColor,
-    text_hue: i32,
-    text_saturation: i32,
-    text_lightness: i32,
-    font_size: i32,
-    background_color: QColor,
-    background_hue: i32,
-    background_saturation: i32,
-    background_lightness: i32,
-    font_size_label: QString,
-    contrast: f32,
-    display_text_color: QColor,
-    grabbed_color: QColor,
-}
 
 impl ffi::Kontrast {
     fn random(mut self: Pin<&mut Self>) {
@@ -76,10 +96,9 @@ impl ffi::Kontrast {
                 rng.gen_range(0..256),
             );
 
-            if contrast(&text_color, &bg_color) > 3.5 {
+            if self.contrast() > 3.5 {
                 self.as_mut().set_text_color(text_color);
                 self.as_mut().set_background_color(bg_color);
-                self.as_mut().recalc_contrast();
                 self.as_mut().font_size_changed();
                 break;
             }
@@ -91,15 +110,18 @@ impl ffi::Kontrast {
         let background_color = self.background_color.clone();
         self.as_mut().set_text_color(background_color);
         self.as_mut().set_background_color(text_color);
-        self.as_mut().recalc_contrast();
         self.as_mut().font_size_changed();
     }
 
-    fn recalc_contrast(mut self: Pin<&mut Self>) {
-        let text_color = self.text_color.clone();
-        let background_color = self.background_color.clone();
-        self.as_mut()
-            .set_contrast(contrast(&text_color, &background_color));
+    fn contrast(self: &Self) -> f32 {
+        let lum1 = luminosity(self.text_color());
+        let lum2 = luminosity(self.background_color());
+
+        if lum1 > lum2 {
+            return (lum1 + 0.05) / (lum2 + 0.05);
+        }
+
+        return (lum2 + 0.05) / (lum1 + 0.05);
     }
 }
 
@@ -131,15 +153,4 @@ fn luminosity(color: &QColor) -> f32 {
     };
 
     return 0.2126 * red_lum + 0.7152 * green_lum + 0.0722 * blue_lum;
-}
-
-fn contrast(text_color: &QColor, bg_color: &QColor) -> f32 {
-    let lum1 = luminosity(&text_color);
-    let lum2 = luminosity(&bg_color);
-
-    if lum1 > lum2 {
-        return (lum1 + 0.05) / (lum2 + 0.05);
-    }
-
-    return (lum2 + 0.05) / (lum1 + 0.05);
 }

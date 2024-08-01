@@ -15,6 +15,5 @@ fn main() {
             rust_files: &["src/kontrast.rs"],
             ..Default::default()
         })
-        .with_opts(cxx_qt_lib_headers::build_opts())
         .build();
 }

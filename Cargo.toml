@@ -12,4 +12,3 @@ rand = "0.8.5"
 
 [build-dependencies]
 cxx-qt-build = { git = "https://github.com/KDAB/cxx-qt", branch = "main"}
-cxx-qt-lib-headers = { git = "https://github.com/KDAB/cxx-qt", branch = "main"}

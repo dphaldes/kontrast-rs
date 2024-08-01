@@ -18,8 +18,8 @@ fn main() {
         License::GPL_V3,
     );
 
-    if let Some(about_data) = about_data.as_mut() {
-        about_data
+    if let Some(about) = about_data.as_mut() {
+        about
             .add_author(KAuthor {
                 name: i18nc("@info:credit", "Carl Schwan"),
                 task: i18nc("@info:credit", "Maintainer and creator"),
