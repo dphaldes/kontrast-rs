@@ -15,5 +15,8 @@ fn main() {
             rust_files: &["src/kontrast.rs"],
             ..Default::default()
         })
+        // .cc_builder(|cc| {
+        //     cc.define("QML_IMPORT_TRACE", None);
+        // })
         .build();
 }

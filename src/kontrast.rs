@@ -39,9 +39,9 @@ mod ffi {
         #[qproperty(i32, background_hue, READ, WRITE, NOTIFY = bg_color_changed)]
         #[qproperty(i32, background_saturation, READ, WRITE, NOTIFY = bg_color_changed)]
         #[qproperty(i32, background_lightness, READ, WRITE, NOTIFY = bg_color_changed)]
-        #[qproperty(QString, font_size_label, READ, NOTIFY = font_size_changed)]
-        #[qproperty(f32, contrast, READ = contrast, NOTIFY = contrast_changed)]
-        #[qproperty(QColor, display_text_color, READ,  NOTIFY = contrast_changed)]
+        #[qproperty(QString, font_size_label, READ, WRITE,  NOTIFY = font_size_changed)]
+        #[qproperty(f32, contrast, READ = contrast,  NOTIFY = contrast_changed)]
+        #[qproperty(QColor, display_text_color, READ, WRITE,   NOTIFY = contrast_changed)]
         #[qproperty(QColor, grabbed_color)]
         type Kontrast = super::KontrastStruct;
 
@@ -95,10 +95,13 @@ impl ffi::Kontrast {
                 rng.gen_range(0..256),
                 rng.gen_range(0..256),
             );
+            self.as_mut().set_text_color(text_color);
+            self.as_mut().set_background_color(bg_color);
 
             if self.contrast() > 3.5 {
-                self.as_mut().set_text_color(text_color);
-                self.as_mut().set_background_color(bg_color);
+                self.as_mut().contrast_changed();
+                self.as_mut().text_color_changed();
+                self.as_mut().bg_color_changed();
                 self.as_mut().font_size_changed();
                 break;
             }

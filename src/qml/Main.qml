@@ -1,20 +1,20 @@
 /**
  * SPDX-FileCopyrightText: (C) 2020 Carl Schwan <carl@carlschwan.eu>
- * 
+ *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
 
-import QtQuick 2.1
-import org.kde.kirigami 2.12 as Kirigami
-import QtQuick.Controls 2.14 as QQC2
-import QtQuick.Window 2.14
-import QtQuick.Layouts 1.14
-
+import QtQuick
+import QtQuick.Controls as QQC2
+import QtQuick.Layouts
+import QtQuick.Window
+import org.kde.kirigami as Kirigami
 
 Kirigami.ApplicationWindow {
     id: root
 
-    
+    pageStack.initialPage: mainPagePool.loadPage("MainPage.qml")
+
     Kirigami.PagePool {
         id: mainPagePool
     }
@@ -26,6 +26,7 @@ Kirigami.ApplicationWindow {
         actions: [
             Kirigami.PagePoolAction {
                 id: contrastChecker
+
                 text: i18nc("@title:menu", "Contrast Checker")
                 icon.name: "go-home"
                 pagePool: mainPagePool
@@ -56,5 +57,4 @@ Kirigami.ApplicationWindow {
         id: contextDrawer
     }
 
-    pageStack.initialPage: mainPagePool.loadPage("MainPage.qml")
 }

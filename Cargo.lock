@@ -10,9 +10,9 @@ checksum = "1fd0f2584146f6f2ef48085050886acf353beff7305ebd1ae69500e27c67f64b"
 
 [[package]]
 name = "cc"
-version = "1.1.7"
+version = "1.1.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "26a5c3fd7bfa1ce3897a3a3501d362b2d87b7f2583ebcb4a949ec25911025cbc"
+checksum = "504bdec147f2cc13c8b57ed9401fd8a147cc66b67ad5cb241394244f2c947549"
 dependencies = [
  "jobserver",
  "libc",
@@ -104,7 +104,7 @@ dependencies = [
 [[package]]
 name = "cxx-qt"
 version = "0.6.1"
-source = "git+https://github.com/KDAB/cxx-qt?branch=main#78554ececa0083fbe8a28ad18b0c16201fdf6833"
+source = "git+https://github.com/KDAB/cxx-qt?branch=main#9f2de71cb12e0a816653e2bdb99f4f369d27c5c4"
 dependencies = [
  "cxx",
  "cxx-build",
@@ -116,7 +116,7 @@ dependencies = [
 [[package]]
 name = "cxx-qt-build"
 version = "0.6.1"
-source = "git+https://github.com/KDAB/cxx-qt?branch=main#78554ececa0083fbe8a28ad18b0c16201fdf6833"
+source = "git+https://github.com/KDAB/cxx-qt?branch=main#9f2de71cb12e0a816653e2bdb99f4f369d27c5c4"
 dependencies = [
  "cc",
  "codespan-reporting",
@@ -134,7 +134,7 @@ dependencies = [
 [[package]]
 name = "cxx-qt-gen"
 version = "0.6.1"
-source = "git+https://github.com/KDAB/cxx-qt?branch=main#78554ececa0083fbe8a28ad18b0c16201fdf6833"
+source = "git+https://github.com/KDAB/cxx-qt?branch=main#9f2de71cb12e0a816653e2bdb99f4f369d27c5c4"
 dependencies = [
  "clang-format",
  "convert_case",
@@ -147,7 +147,7 @@ dependencies = [
 [[package]]
 name = "cxx-qt-lib"
 version = "0.6.1"
-source = "git+https://github.com/KDAB/cxx-qt?branch=main#78554ececa0083fbe8a28ad18b0c16201fdf6833"
+source = "git+https://github.com/KDAB/cxx-qt?branch=main#9f2de71cb12e0a816653e2bdb99f4f369d27c5c4"
 dependencies = [
  "cxx",
  "cxx-qt",
@@ -157,7 +157,7 @@ dependencies = [
 [[package]]
 name = "cxx-qt-macro"
 version = "0.6.1"
-source = "git+https://github.com/KDAB/cxx-qt?branch=main#78554ececa0083fbe8a28ad18b0c16201fdf6833"
+source = "git+https://github.com/KDAB/cxx-qt?branch=main#9f2de71cb12e0a816653e2bdb99f4f369d27c5c4"
 dependencies = [
  "cxx-qt-gen",
  "proc-macro2",
@@ -285,9 +285,9 @@ checksum = "3fdb12b2476b595f9358c5161aa467c2438859caa136dec86c26fdd2efe17b92"
 
 [[package]]
 name = "ppv-lite86"
-version = "0.2.18"
+version = "0.2.20"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "dee4364d9f3b902ef14fab8a1ddffb783a1cb6b4bba3bfc1fa3922732c7de97f"
+checksum = "77957b295656769bb8ad2b6a6b09d897d94f05c41b069aede1fcdaa675eaea04"
 dependencies = [
  "zerocopy",
 ]
@@ -304,7 +304,7 @@ dependencies = [
 [[package]]
 name = "qt-build-utils"
 version = "0.6.1"
-source = "git+https://github.com/KDAB/cxx-qt?branch=main#78554ececa0083fbe8a28ad18b0c16201fdf6833"
+source = "git+https://github.com/KDAB/cxx-qt?branch=main#9f2de71cb12e0a816653e2bdb99f4f369d27c5c4"
 dependencies = [
  "cc",
  "thiserror",
@@ -364,18 +364,18 @@ checksum = "a3cf7c11c38cb994f3d40e8a8cde3bbd1f72a435e4c49e85d6553d8312306152"
 
 [[package]]
 name = "serde"
-version = "1.0.204"
+version = "1.0.205"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "bc76f558e0cbb2a839d37354c575f1dc3fdc6546b5be373ba43d95f231bf7c12"
+checksum = "e33aedb1a7135da52b7c21791455563facbbcc43d0f0f66165b42c21b3dfb150"
 dependencies = [
  "serde_derive",
 ]
 
 [[package]]
 name = "serde_derive"
-version = "1.0.204"
+version = "1.0.205"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e0cd7e117be63d3c3678776753929474f3b04a43a080c744d6b0ae2a8c28e222"
+checksum = "692d6f5ac90220161d6774db30c662202721e64aed9058d2c394f451261420c1"
 dependencies = [
  "proc-macro2",
  "quote",
@@ -384,9 +384,9 @@ dependencies = [
 
 [[package]]
 name = "serde_json"
-version = "1.0.121"
+version = "1.0.122"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4ab380d7d9f22ef3f21ad3e6c1ebe8e4fc7a2000ccba2e4d71fc96f15b2cb609"
+checksum = "784b6203951c57ff748476b126ccb5e8e2959a5c19e5c617ab1956be3dbc68da"
 dependencies = [
  "itoa",
  "memchr",
@@ -466,9 +466,9 @@ checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
 name = "versions"
-version = "6.3.0"
+version = "6.3.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "5fc28d1172a20e32754969ea1a873c2c6e68e36c449c6056aa3e2ee5fe69a794"
+checksum = "d9d65b79e2fb156a6f5f23f0e3018f19903ffd6b022553755ed6caf708f41a38"
 dependencies = [
  "itertools",
  "nom",
@@ -482,18 +482,18 @@ checksum = "9c8d87e72b64a3b4db28d11ce29237c246188f4f51057d65a7eab63b7987e423"
 
 [[package]]
 name = "winapi-util"
-version = "0.1.8"
+version = "0.1.9"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "4d4cc384e1e73b93bafa6fb4f1df8c41695c8a91cf9c4c64358067d15a7b6c6b"
+checksum = "cf221c93e13a30d793f7645a0e7762c55d169dbb0a49671918a2319d289b10bb"
 dependencies = [
  "windows-sys",
 ]
 
 [[package]]
 name = "windows-sys"
-version = "0.52.0"
+version = "0.59.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "282be5f36a8ce781fad8c8ae18fa3f9beff57ec1b52cb3de0789201425d9a33d"
+checksum = "1e38bc4d79ed67fd075bcc251a1c39b32a1776bbe92e5bef1f0bf1f8c531853b"
 dependencies = [
  "windows-targets",
 ]
@@ -564,9 +564,9 @@ checksum = "589f6da84c646204747d1270a2a5661ea66ed1cced2631d546fdfb155959f9ec"
 
 [[package]]
 name = "zerocopy"
-version = "0.6.6"
+version = "0.7.35"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "854e949ac82d619ee9a14c66a1b674ac730422372ccb759ce0c39cabcf2bf8e6"
+checksum = "1b9b4fd18abc82b8136838da5d50bae7bdea537c574d8dc1a34ed098d6c166f0"
 dependencies = [
  "byteorder",
  "zerocopy-derive",
@@ -574,9 +574,9 @@ dependencies = [
 
 [[package]]
 name = "zerocopy-derive"
-version = "0.6.6"
+version = "0.7.35"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "125139de3f6b9d625c39e2efdd73d41bdac468ccd556556440e322be0e1bbd91"
+checksum = "fa4f8080344d4671fb4e831a13ad1e68092748387dfc4f55e356242fae12ce3e"
 dependencies = [
  "proc-macro2",
  "quote",

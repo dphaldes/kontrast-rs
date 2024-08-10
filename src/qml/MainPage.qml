@@ -4,7 +4,6 @@
  *
  * SPDX-License-Identifier: GPL-3.0-or-later
  */
-
 import QtQuick 2.1
 import QtQuick.Controls 2.14 as QQC2
 import QtQuick.Layouts 1.14
@@ -68,6 +67,24 @@ Kirigami.ScrollablePage {
             wrapMode: Text.WordWrap
             text: i18n("Contrast is the difference in luminance or color that makes an object (or its representation in an image or display) distinguishable. In visual perception of the real world, contrast is determined by the difference in the color and brightness of the object and other objects within the same field of view.")
             color: Kontrast.textColor
+        }
+
+        ColumnLayout {
+            Layout.topMargin: Kirigami.Units.gridUnit * 2
+
+            Text {
+                Layout.topMargin: Kirigami.Units.smallSpacing
+                text: i18nc("@label", "Font size: %1px", Kontrast.fontSize)
+                color: Kontrast.displayTextColor
+            }
+
+            QQC2.Slider {
+                from: 1
+                value: Kontrast.fontSize
+                to: 24
+                onMoved: Kontrast.fontSize = value
+            }
+
         }
 
         GridLayout {
@@ -244,24 +261,6 @@ Kirigami.ScrollablePage {
                     Layout.fillWidth: true
                 }
 
-            }
-
-        }
-
-        ColumnLayout {
-            Layout.topMargin: Kirigami.Units.gridUnit * 2
-
-            Text {
-                Layout.topMargin: Kirigami.Units.smallSpacing
-                text: i18nc("@label", "Font size: %1px", Kontrast.fontSize)
-                color: Kontrast.displayTextColor
-            }
-
-            QQC2.Slider {
-                from: 1
-                value: Kontrast.fontSize
-                to: 24
-                onMoved: Kontrast.fontSize = value
             }
 
         }
