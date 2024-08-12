@@ -246,8 +246,12 @@ impl ffi::Kontrast {
     }
 
     fn contrast(self: &Self) -> f32 {
-        let lum1 = luminosity(self.text_color());
-        let lum2 = luminosity(self.background_color());
+        Self::contrast_for_colors(self.text_color(), self.background_color())
+    }
+
+    fn contrast_for_colors(color_foreground: &QColor, color_background: &QColor) -> f32 {
+        let lum1 = luminosity(color_foreground);
+        let lum2 = luminosity(color_background);
 
         if lum1 > lum2 {
             return (lum1 + 0.05) / (lum2 + 0.05);
@@ -264,10 +268,9 @@ impl ffi::Kontrast {
             let text_color = QColor::from_rgb(col(), col(), col());
             let bg_color = QColor::from_rgb(col(), col(), col());
 
-            self.as_mut().set_text_color(text_color);
-            self.as_mut().set_background_color(bg_color);
-
-            if self.contrast() > 3.5 {
+            if Self::contrast_for_colors(&text_color, &bg_color) > 3.5 {
+                self.as_mut().set_text_color(text_color);
+                self.as_mut().set_background_color(bg_color);
                 break;
             }
         }
