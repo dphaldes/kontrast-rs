@@ -6,3 +6,8 @@ using the [cxx-kde-frameworks](https://github.com/mystchonky/cxx-kde-frameworks)
 ## Building
 
 Make sure to clone cxx-kde-frameworks in the parent directory, and have the development libraries for Kirigami installed. Then it's as simple as `cargo run`.
+
+
+## License
+
+This project is licensed under GPL-3.0-or-later. Individual files may be released under other licenses. You can read the license text [here](./LICENSES/GPL-3.0-or-later.txt).

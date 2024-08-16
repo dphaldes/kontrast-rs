@@ -129,6 +129,7 @@ mod ffi {
 use std::pin::Pin;
 
 use cxx_kde_frameworks::ki18n::i18n;
+use cxx_qt::CxxQtType;
 use cxx_qt_lib::{QColor, QString};
 use rand::{thread_rng, Rng};
 
@@ -137,7 +138,7 @@ impl ffi::Kontrast {
         if self.text_color == color {
             return;
         }
-        let mut _self = self.as_mut().cxx_qt_ffi_rust_mut();
+        let mut _self = self.as_mut().rust_mut();
         _self.text_color = color;
 
         self.as_mut().text_color_changed();
@@ -151,7 +152,7 @@ impl ffi::Kontrast {
 
     fn set_text_hue(mut self: Pin<&mut Self>, hue: i32) {
         let color = self.as_mut().text_color.to_owned();
-        let mut _self = self.as_mut().cxx_qt_ffi_rust_mut();
+        let mut _self = self.as_mut().rust_mut();
         _self
             .text_color
             .set_hsl(hue, color.saturation(), color.lightness(), color.alpha());
@@ -167,7 +168,7 @@ impl ffi::Kontrast {
 
     fn set_text_lightness(mut self: Pin<&mut Self>, lightness: i32) {
         let color = self.as_mut().text_color.to_owned();
-        let mut _self = self.as_mut().cxx_qt_ffi_rust_mut();
+        let mut _self = self.as_mut().rust_mut();
         _self
             .text_color
             .set_hsl(color.hue(), color.saturation(), lightness, color.alpha());
@@ -183,7 +184,7 @@ impl ffi::Kontrast {
 
     fn set_text_saturation(mut self: Pin<&mut Self>, saturation: i32) {
         let color = self.as_mut().text_color.to_owned();
-        let mut _self = self.as_mut().cxx_qt_ffi_rust_mut();
+        let mut _self = self.as_mut().rust_mut();
         _self
             .text_color
             .set_hsl(color.hue(), saturation, color.lightness(), color.alpha());
@@ -199,7 +200,7 @@ impl ffi::Kontrast {
 
     fn set_background_hue(mut self: Pin<&mut Self>, hue: i32) {
         let color = self.as_mut().background_color.to_owned();
-        let mut _self = self.as_mut().cxx_qt_ffi_rust_mut();
+        let mut _self = self.as_mut().rust_mut();
         _self
             .background_color
             .set_hsl(hue, color.saturation(), color.lightness(), color.alpha());
@@ -215,7 +216,7 @@ impl ffi::Kontrast {
 
     fn set_background_lightness(mut self: Pin<&mut Self>, lightness: i32) {
         let color = self.as_mut().background_color.to_owned();
-        let mut _self = self.as_mut().cxx_qt_ffi_rust_mut();
+        let mut _self = self.as_mut().rust_mut();
         _self
             .background_color
             .set_hsl(color.hue(), color.saturation(), lightness, color.alpha());
@@ -231,7 +232,7 @@ impl ffi::Kontrast {
 
     fn set_background_saturation(mut self: Pin<&mut Self>, saturation: i32) {
         let color = self.as_mut().background_color.to_owned();
-        let mut _self = self.as_mut().cxx_qt_ffi_rust_mut();
+        let mut _self = self.as_mut().rust_mut();
         _self
             .background_color
             .set_hsl(color.hue(), saturation, color.lightness(), color.alpha());
@@ -320,7 +321,7 @@ impl ffi::Kontrast {
             let text_color = QColor::from_rgb(col(), col(), col());
             let bg_color = QColor::from_rgb(col(), col(), col());
 
-            let mut _self = self.as_mut().cxx_qt_ffi_rust_mut();
+            let mut _self = self.as_mut().rust_mut();
             _self.text_color = text_color;
             _self.background_color = bg_color;
 
@@ -338,7 +339,7 @@ impl ffi::Kontrast {
         let text_color = self.text_color.to_owned();
         let background_color = self.background_color.to_owned();
 
-        let mut _self = self.as_mut().cxx_qt_ffi_rust_mut();
+        let mut _self = self.as_mut().rust_mut();
         _self.text_color = background_color;
         _self.background_color = text_color;
 
