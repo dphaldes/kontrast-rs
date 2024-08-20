@@ -34,17 +34,17 @@ mod ffi {
         #[qobject]
         #[qml_element]
         #[qml_singleton]
-        #[qproperty(QColor, text_color, READ, WRITE = set_text_color, NOTIFY = text_color_changed)]
+        #[qproperty(QColor, text_color, READ, WRITE, NOTIFY = text_color_changed)]
         #[qproperty(i32, text_hue, READ = text_hue, WRITE = set_text_hue, NOTIFY = text_color_changed)]
         #[qproperty(i32, text_lightness, READ = text_lightness, WRITE = set_text_lightness, NOTIFY = text_color_changed)]
         #[qproperty(i32, text_saturation, READ = text_saturation, WRITE = set_text_saturation, NOTIFY = text_color_changed)]
         #[qproperty(i32, font_size, READ, WRITE, NOTIFY = font_size_changed)]
-        #[qproperty(QColor, background_color, READ, WRITE, NOTIFY = bg_color_changed)]
-        #[qproperty(i32, background_hue, READ = background_hue, WRITE = set_background_hue, NOTIFY = bg_color_changed)]
-        #[qproperty(i32, background_saturation, READ = background_saturation, WRITE = set_background_saturation, NOTIFY = bg_color_changed)]
-        #[qproperty(i32, background_lightness, READ = background_lightness, WRITE = set_background_lightness, NOTIFY = bg_color_changed)]
+        #[qproperty(QColor, background_color, READ, WRITE, NOTIFY = background_color_changed)]
+        #[qproperty(i32, background_hue, READ = background_hue, WRITE = set_background_hue, NOTIFY = background_color_changed)]
+        #[qproperty(i32, background_saturation, READ = background_saturation, WRITE = set_background_saturation, NOTIFY = background_color_changed)]
+        #[qproperty(i32, background_lightness, READ = background_lightness, WRITE = set_background_lightness, NOTIFY = background_color_changed)]
         #[qproperty(QString, font_size_label, READ = font_size_label, NOTIFY = font_size_changed)]
-        #[qproperty(f32, contrast, READ = contrast,  NOTIFY = contrast_changed)]
+        #[qproperty(f32, contrast, READ = contrast, NOTIFY = contrast_changed)]
         #[qproperty(QColor, display_text_color, READ = display_text_color, NOTIFY = contrast_changed)]
         #[qproperty(QColor, grabbed_color)]
         type Kontrast = super::KontrastStruct;
@@ -58,15 +58,12 @@ mod ffi {
         fn font_size_changed(self: Pin<&mut Kontrast>);
 
         #[qsignal]
-        fn bg_color_changed(self: Pin<&mut Kontrast>);
+        fn background_color_changed(self: Pin<&mut Kontrast>);
 
         #[qsignal]
         fn contrast_changed(self: Pin<&mut Kontrast>);
 
         // properties
-
-        #[qinvokable]
-        fn set_text_color(self: Pin<&mut Kontrast>, color: QColor);
 
         #[qinvokable]
         fn text_hue(self: &Kontrast) -> i32;
@@ -129,37 +126,18 @@ mod ffi {
 use std::pin::Pin;
 
 use cxx_kde_frameworks::ki18n::i18n;
-use cxx_qt::CxxQtType;
 use cxx_qt_lib::{QColor, QString};
 use rand::{thread_rng, Rng};
 
 impl ffi::Kontrast {
-    fn set_text_color(mut self: Pin<&mut Self>, color: QColor) {
-        if self.text_color == color {
-            return;
-        }
-        let mut _self = self.as_mut().rust_mut();
-        _self.text_color = color;
-
-        self.as_mut().text_color_changed();
-        self.as_mut().contrast_changed();
-        self.as_mut().font_size_changed();
-    }
-
     fn text_hue(self: &Self) -> i32 {
         return self.text_color.hsl_hue();
     }
 
     fn set_text_hue(mut self: Pin<&mut Self>, hue: i32) {
         let color = self.as_mut().text_color.to_owned();
-        let mut _self = self.as_mut().rust_mut();
-        _self
-            .text_color
-            .set_hsl(hue, color.saturation(), color.lightness(), color.alpha());
-
-        self.as_mut().text_color_changed();
-        self.as_mut().contrast_changed();
-        self.as_mut().font_size_changed();
+        self.as_mut()
+            .set_text_color(QColor::from_hsl(hue, color.saturation(), color.lightness()));
     }
 
     fn text_lightness(self: &Self) -> i32 {
@@ -168,14 +146,8 @@ impl ffi::Kontrast {
 
     fn set_text_lightness(mut self: Pin<&mut Self>, lightness: i32) {
         let color = self.as_mut().text_color.to_owned();
-        let mut _self = self.as_mut().rust_mut();
-        _self
-            .text_color
-            .set_hsl(color.hue(), color.saturation(), lightness, color.alpha());
-
-        self.as_mut().text_color_changed();
-        self.as_mut().contrast_changed();
-        self.as_mut().font_size_changed();
+        self.as_mut()
+            .set_text_color(QColor::from_hsl(color.hue(), color.saturation(), lightness));
     }
 
     fn text_saturation(self: &Self) -> i32 {
@@ -184,14 +156,8 @@ impl ffi::Kontrast {
 
     fn set_text_saturation(mut self: Pin<&mut Self>, saturation: i32) {
         let color = self.as_mut().text_color.to_owned();
-        let mut _self = self.as_mut().rust_mut();
-        _self
-            .text_color
-            .set_hsl(color.hue(), saturation, color.lightness(), color.alpha());
-
-        self.as_mut().text_color_changed();
-        self.as_mut().contrast_changed();
-        self.as_mut().font_size_changed();
+        self.as_mut()
+            .set_text_color(QColor::from_hsl(color.hue(), saturation, color.lightness()));
     }
 
     fn background_hue(self: &Self) -> i32 {
@@ -200,14 +166,11 @@ impl ffi::Kontrast {
 
     fn set_background_hue(mut self: Pin<&mut Self>, hue: i32) {
         let color = self.as_mut().background_color.to_owned();
-        let mut _self = self.as_mut().rust_mut();
-        _self
-            .background_color
-            .set_hsl(hue, color.saturation(), color.lightness(), color.alpha());
-
-        self.as_mut().bg_color_changed();
-        self.as_mut().contrast_changed();
-        self.as_mut().font_size_changed();
+        self.as_mut().set_background_color(QColor::from_hsl(
+            hue,
+            color.saturation(),
+            color.lightness(),
+        ));
     }
 
     fn background_lightness(self: &Self) -> i32 {
@@ -216,14 +179,11 @@ impl ffi::Kontrast {
 
     fn set_background_lightness(mut self: Pin<&mut Self>, lightness: i32) {
         let color = self.as_mut().background_color.to_owned();
-        let mut _self = self.as_mut().rust_mut();
-        _self
-            .background_color
-            .set_hsl(color.hue(), color.saturation(), lightness, color.alpha());
-
-        self.as_mut().bg_color_changed();
-        self.as_mut().contrast_changed();
-        self.as_mut().font_size_changed();
+        self.as_mut().set_background_color(QColor::from_hsl(
+            color.hue(),
+            color.saturation(),
+            lightness,
+        ));
     }
 
     fn background_saturation(self: &Self) -> i32 {
@@ -232,14 +192,11 @@ impl ffi::Kontrast {
 
     fn set_background_saturation(mut self: Pin<&mut Self>, saturation: i32) {
         let color = self.as_mut().background_color.to_owned();
-        let mut _self = self.as_mut().rust_mut();
-        _self
-            .background_color
-            .set_hsl(color.hue(), saturation, color.lightness(), color.alpha());
-
-        self.as_mut().bg_color_changed();
-        self.as_mut().contrast_changed();
-        self.as_mut().font_size_changed();
+        self.as_mut().set_background_color(QColor::from_hsl(
+            color.hue(),
+            saturation,
+            color.lightness(),
+        ));
     }
 
     fn font_size_label(self: &Self) -> QString {
@@ -303,8 +260,12 @@ impl ffi::Kontrast {
     }
 
     fn contrast(self: &Self) -> f32 {
-        let lum1 = luminosity(self.text_color());
-        let lum2 = luminosity(self.background_color());
+        Self::contrast_for_colors(self.text_color(), self.background_color())
+    }
+
+    fn contrast_for_colors(color_foreground: &QColor, color_background: &QColor) -> f32 {
+        let lum1 = luminosity(color_foreground);
+        let lum2 = luminosity(color_background);
 
         if lum1 > lum2 {
             return (lum1 + 0.05) / (lum2 + 0.05);
@@ -321,15 +282,9 @@ impl ffi::Kontrast {
             let text_color = QColor::from_rgb(col(), col(), col());
             let bg_color = QColor::from_rgb(col(), col(), col());
 
-            let mut _self = self.as_mut().rust_mut();
-            _self.text_color = text_color;
-            _self.background_color = bg_color;
-
-            if self.contrast() > 3.5 {
-                self.as_mut().contrast_changed();
-                self.as_mut().text_color_changed();
-                self.as_mut().bg_color_changed();
-                self.as_mut().font_size_changed();
+            if Self::contrast_for_colors(&text_color, &bg_color) > 3.5 {
+                self.as_mut().set_text_color(text_color);
+                self.as_mut().set_background_color(bg_color);
                 break;
             }
         }
@@ -338,21 +293,24 @@ impl ffi::Kontrast {
     fn reverse(mut self: Pin<&mut Self>) {
         let text_color = self.text_color.to_owned();
         let background_color = self.background_color.to_owned();
-
-        let mut _self = self.as_mut().rust_mut();
-        _self.text_color = background_color;
-        _self.background_color = text_color;
-
-        self.as_mut().text_color_changed();
-        self.as_mut().bg_color_changed();
-        self.as_mut().contrast_changed();
-        self.as_mut().font_size_changed();
+        self.as_mut().set_text_color(background_color);
+        self.as_mut().set_background_color(text_color);
     }
 }
 
 impl cxx_qt::Initialize for ffi::Kontrast {
-    fn initialize(self: core::pin::Pin<&mut Self>) {
-        self.random();
+    fn initialize(mut self: core::pin::Pin<&mut Self>) {
+        self.as_mut()
+            .on_text_color_changed(|qobject| {
+                qobject.contrast_changed();
+            })
+            .release();
+        self.as_mut()
+            .on_background_color_changed(|qobject| {
+                qobject.contrast_changed();
+            })
+            .release();
+        self.as_mut().random();
     }
 }
 
