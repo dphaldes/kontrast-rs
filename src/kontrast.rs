@@ -124,11 +124,13 @@ mod ffi {
     }
 
     impl cxx_qt::Constructor<()> for Kontrast {}
+    impl cxx_qt::Threading for Kontrast {}
 }
 
 use std::pin::Pin;
 
 use cxx_kde_frameworks::ki18n::i18n;
+use cxx_qt::Threading;
 use cxx_qt_lib::{QColor, QString};
 use rand::{thread_rng, Rng};
 
@@ -302,15 +304,20 @@ impl ffi::Kontrast {
         self.as_mut().set_background_color(text_color);
     }
 
-    fn grab_color(mut self: Pin<&mut Self>) {
+    fn grab_color(self: Pin<&mut Self>) {
+        let qt_thread = self.qt_thread();
         tokio::spawn(async move {
             match dbus::grab_color().await {
                 Ok(vec) => {
                     let color = QColor::from_rgb_f(vec[0], vec[1], vec[2]);
-                    self.as_mut().set_grabbed_color(color);
+                    qt_thread
+                        .queue(move |mut qobj| {
+                            qobj.as_mut().set_grabbed_color(color);
+                        })
+                        .unwrap();
                 }
                 Err(_) => {}
-            }
+            };
         });
     }
 }
