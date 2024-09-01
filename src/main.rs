@@ -2,9 +2,11 @@ use cxx_kde_frameworks::kcoreaddons::{KAboutData, KAuthor, KCredit, KTranslator,
 use cxx_kde_frameworks::ki18n::{i18nc, KLocalizedContext, KLocalizedString};
 use cxx_qt_lib::{QByteArray, QGuiApplication, QQmlApplicationEngine, QString, QUrl};
 
+mod dbus;
 mod kontrast;
 
-fn main() {
+#[tokio::main]
+async fn main() {
     let mut app = QGuiApplication::new();
     let mut engine = QQmlApplicationEngine::new();
 

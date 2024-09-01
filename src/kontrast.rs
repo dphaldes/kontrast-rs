@@ -110,6 +110,9 @@ mod ffi {
         #[qinvokable]
         fn contrast(self: &Kontrast) -> f32;
 
+        #[qinvokable]
+        fn grab_color(self: Pin<&mut Kontrast>);
+
         // methods
 
         #[qinvokable]
@@ -128,6 +131,8 @@ use std::pin::Pin;
 use cxx_kde_frameworks::ki18n::i18n;
 use cxx_qt_lib::{QColor, QString};
 use rand::{thread_rng, Rng};
+
+use crate::dbus;
 
 impl ffi::Kontrast {
     fn text_hue(self: &Self) -> i32 {
@@ -295,6 +300,18 @@ impl ffi::Kontrast {
         let background_color = self.background_color.to_owned();
         self.as_mut().set_text_color(background_color);
         self.as_mut().set_background_color(text_color);
+    }
+
+    fn grab_color(mut self: Pin<&mut Self>) {
+        tokio::spawn(async move {
+            match dbus::grab_color().await {
+                Ok(vec) => {
+                    let color = QColor::from_rgb_f(vec[0], vec[1], vec[2]);
+                    self.as_mut().set_grabbed_color(color);
+                }
+                Err(_) => {}
+            }
+        });
     }
 }
 

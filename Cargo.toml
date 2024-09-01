@@ -9,6 +9,9 @@ cxx-qt = { git = "https://github.com/KDAB/cxx-qt", branch = "main" }
 cxx-qt-lib = { git = "https://github.com/KDAB/cxx-qt", branch = "main" }
 cxx-kde-frameworks = { path = "../cxx-kde-frameworks/" }
 rand = "0.8.5"
+zbus = { version = "4.4.0", features = ["tokio"] }
+tokio = { version = "1.39.3", features = ["full"] }
+futures-util = "0.3.30"
 
 [build-dependencies]
 # cxx-qt-build = { git = "https://github.com/KDAB/cxx-qt", branch = "main"}
