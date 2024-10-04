@@ -11,6 +11,7 @@ async fn main() {
     let mut engine = QQmlApplicationEngine::new();
 
     KLocalizedString::set_application_domain(&QByteArray::from("konstrast"));
+    QGuiApplication::set_desktop_file_name(&QString::from("co.chonky.kontrast-rs"));
 
     let mut about_data = KAboutData::from(
         QString::from("konstrast"),
