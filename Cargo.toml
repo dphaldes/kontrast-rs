@@ -5,14 +5,13 @@ edition = "2021"
 
 [dependencies]
 cxx = "1.0.121"
-cxx-qt = { git = "https://github.com/KDAB/cxx-qt", branch = "main"}
-cxx-qt-lib = { git = "https://github.com/KDAB/cxx-qt", branch = "main", features = ["full_qt"]}
 cxx-kde-frameworks = { path = "../cxx-kde-frameworks/" }
 rand = "0.8.5"
 zbus = { version = "4.4.0", features = ["tokio"] }
 tokio = { version = "1.39.3", features = ["full"] }
 futures-util = "0.3.30"
+cxx-qt = "0.7.0"
+cxx-qt-lib = { version = "0.7.0", features = ["qt_full"] }
 
 [build-dependencies]
-# cxx-qt-build = { git = "https://github.com/KDAB/cxx-qt", branch = "main"}
-cxx-qt-build = { git = "https://github.com/KDAB/cxx-qt", branch = "main",  features = ["link_qt_object_files"]}
+cxx-qt-build = "0.7.0"
