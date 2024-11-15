@@ -46,7 +46,7 @@ async fn main() {
             });
     }
 
-    KAboutData::set_application_data(about_data);
+    KAboutData::set_application_data(&about_data);
 
     if let Some(mut engine) = engine.as_mut() {
         KLocalizedContext::initialize_engine(engine.as_mut().as_qqmlengine());
